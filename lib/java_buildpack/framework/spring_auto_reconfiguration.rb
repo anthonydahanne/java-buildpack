@@ -59,10 +59,18 @@ module JavaBuildpack
       end
 
       def java_cfenv?
-        (@droplet.root + '**/*java-cfenv*.jar').glob.any? ||
-          @droplet.additional_libraries.sort.map do |additional_library|
-            return false unless (additional_library.dirname + '*java-cfenv*.jar').glob.any?
-          end
+        any_java_cfenv = (@droplet.root + '**/*java-cfenv*.jar').glob.any?
+        additional_java_cfenv = @droplet.additional_libraries.empty? ? false : @droplet.additional_libraries.sort.map do |additional_library|
+          print(additional_library.dirname)
+          return false unless (additional_library.dirname + '*java-cfenv*.jar').glob.any?
+        end
+        print(
+          'ANTHONY TESTING!'\
+            "any_java_cfenv: #{any_java_cfenv}, " \
+            "additional_java_cfenv: #{additional_java_cfenv}, " \
+            "any_java_cfenv || additional_java_cfenv: #{any_java_cfenv || additional_java_cfenv}"
+        )
+        any_java_cfenv || additional_java_cfenv
       end
 
       def spring_cloud_connectors?
