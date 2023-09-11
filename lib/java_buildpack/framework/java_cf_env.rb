@@ -29,6 +29,7 @@ module JavaBuildpack
 
       def initialize(context)
         @spring_boot_utils = JavaBuildpack::Util::SpringBootUtils.new
+        @logger = Logging::LoggerFactory.instance.get_logger Buildpack
         super(context)
       end
 
@@ -41,8 +42,12 @@ module JavaBuildpack
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
         @droplet.additional_libraries << (@droplet.sandbox + jar_name)
+        @logger.info { "before!!!" }
+        @logger.info { @droplet.environment_variables}
         @droplet.environment_variables.add_environment_variable \
-          'SPRING_PROFILES_INCLUDE', '$SPRING_PROFILES_INCLUDE,cloud'
+          'SPRING_PROFILES_INCLUDE', 'cloud,$SPRING_PROFILES_INCLUDE'
+        @logger.info { "after!!!"}
+        @logger.info { @droplet.environment_variables}
       end
 
       protected
