@@ -35,6 +35,16 @@ describe JavaBuildpack::Framework::ClientCertificateMapper do
     expect(additional_libraries).to include(sandbox + "client_certificate_mapper-#{version}.jar")
   end
 
+  it 'adds the jar to the additional libraries during compile of spring boot 3 app',
+     app_fixture: 'framework_java_cf_boot_3',
+     cache_fixture: 'stub-client-certificate-mapper.jar' do
+
+    component.compile
+
+    expect(sandbox + "client_certificate_mapper-#{version}.jar").to exist
+    expect(additional_libraries).to include(sandbox + "client_certificate_mapper-#{version}.jar")
+  end
+
   it 'adds the jar to the additional libraries during release',
      cache_fixture: 'stub-client-certificate-mapper.jar' do
 
