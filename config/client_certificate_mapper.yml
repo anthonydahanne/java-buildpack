@@ -14,6 +14,3 @@
 # limitations under the License.
 
 # Container security provider configuration
----
-version: 1.+
-repository_root: "{default.repository.root}/client-certificate-mapper"
